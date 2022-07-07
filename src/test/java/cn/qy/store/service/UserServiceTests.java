@@ -35,4 +35,18 @@ public class UserServiceTests {
         }
 
     }
+
+    @Test
+    public void login() {
+        try {
+            User user = userService.login("test01", "1234");
+            System.out.println(user);
+        } catch (ServiceException e) {
+            // 获取类的对象，再获取类的名称
+            System.out.println(e.getClass().getSimpleName());
+            //获取异常的具体描述信息
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

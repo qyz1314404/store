@@ -4,6 +4,8 @@ import cn.qy.store.entity.User;
 import cn.qy.store.mapper.UserMapper;
 import cn.qy.store.service.IUserService;
 import cn.qy.store.service.ex.InsertException;
+import cn.qy.store.service.ex.PasswordNotMatchException;
+import cn.qy.store.service.ex.UserNotFoundException;
 import cn.qy.store.service.ex.UsernameDuplicatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +61,38 @@ public class UserServiceImpl implements IUserService {
         if (rows != 1) {
             throw new InsertException("在用户注册过程中产生了未知的异常");
         }
+    }
+
+    @Override
+    public User login(String username, String password) {
+        // 根据用户名称来查询用户的数据是否存在，如果不存在则抛出异常
+        User result = userMapper.findByUsername(username);
+        if (result == null) {
+            throw new UserNotFoundException("用户数据不存在");
+        }
+        //检测用户密码是否匹配
+        //1.先获取到数据库中的加密之后的密码
+        String oldPassword = result.getPassword();
+        //2.和用户传递过来的的密码进行比较
+        //2.1先获取盐值：上一次在注册时所自动生成的盐值
+        String salt = result.getSalt();
+        //2.2 将用户的密码按照相同的md5算法的规则进行加密
+        String newMd5Password = getMD5Password(password, salt);
+        //3.将密码进行比较
+        if (!newMd5Password.equals(oldPassword)) {
+            throw new PasswordNotMatchException("用户密码错误");
+        }
+        //4. 判断is_delete字段的值是否为1表示被标记为删除
+        if (result.getIsDelete() == 1) {
+            throw new UserNotFoundException("用户数据不存在");
+        }
+        //封装部分字段数据，提升系统的性能
+        User user = new User();
+        user.setUid(result.getUid());
+        user.setUsername(result.getUsername());
+        user.setAvatar(result.getAvatar());
+        // 当前返回的数据是为了辅助其他页面做数据展示使用(uid,username,avatar)
+        return user;
     }
 
     private String getMD5Password(String password, String salt) {
