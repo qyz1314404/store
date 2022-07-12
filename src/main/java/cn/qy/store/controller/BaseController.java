@@ -4,6 +4,8 @@ import cn.qy.store.service.ex.*;
 import cn.qy.store.util.JsonResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @description: 控制层类的基类
  * @author: QiuYang
@@ -24,14 +26,31 @@ public class BaseController {
         } else if (e instanceof InsertException) {
             result.setState(5000);
             result.setMessage("注册时产生未知的异常");
-        }else if (e instanceof UserNotFoundException) {
+        } else if (e instanceof UserNotFoundException) {
             result.setState(5001);
             result.setMessage("用户数据不存在的异常");
-        }else if (e instanceof PasswordNotMatchException) {
+        } else if (e instanceof PasswordNotMatchException) {
             result.setState(5002);
             result.setMessage("用户名的密码错误的异常");
         }
         return result;
     }
 
+    /*
+     * 获取session对象中的uid
+     * @param session session对象
+     * @return 当前登录的用户uid的值
+     * */
+    protected final Integer getUidFromSession(HttpSession session) {
+        return Integer.valueOf(session.getAttribute("uid").toString());
+    }
+
+    /*
+     * 获取当前登录用户的username
+     * @param session session对象
+     * @return 当前登录用户的用户名
+     * */
+    protected final String getUsernameFromSession(HttpSession session) {
+        return session.getAttribute("username").toString();
+    }
 }

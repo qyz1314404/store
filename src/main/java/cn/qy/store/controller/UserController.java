@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @description:
  * @author: QiuYang
@@ -60,8 +62,14 @@ public JsonResult<Void> reg(User user) {
 *
 * */
     @RequestMapping("login")
-    public JsonResult<User> login(String username, String password) {
+    public JsonResult<User> login(String username, String password, HttpSession session) {
         User data = userService.login(username, password);
+        //向session对象中完成数据的绑定（session全局的）
+        session.setAttribute("uid",data.getUid());
+        session.setAttribute("username",data.getUsername());
+        //获取session中绑定的数据
+        System.out.println(getUidFromSession(session));
+        System.out.println(getUsernameFromSession(session));
         return new JsonResult<User>(OK,data);
     }
 }
