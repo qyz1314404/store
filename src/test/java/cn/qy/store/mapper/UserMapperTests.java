@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Date;
+
 /**
  * @description: 测试持久层
  * @author: QiuYang
@@ -25,4 +27,12 @@ public class UserMapperTests {
         System.out.println(rows);
 
     }
+@Test
+    public void updatePasswordByUid() {
+    userMapper.updatePasswordByUid(7, "123", "管理员",new Date());
+    }
+@Test
+    public void findByUid() {
+    System.out.println(userMapper.findByUid(1));
+}
 }

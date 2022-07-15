@@ -48,5 +48,9 @@ public class UserServiceTests {
             System.out.println(e.getMessage());
         }
     }
+    @Test
+    public void changePassword() {
+        userService.changePassword(5,"管理员","123456","123");
+    }
 
 }

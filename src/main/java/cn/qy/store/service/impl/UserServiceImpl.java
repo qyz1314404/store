@@ -3,10 +3,7 @@ package cn.qy.store.service.impl;
 import cn.qy.store.entity.User;
 import cn.qy.store.mapper.UserMapper;
 import cn.qy.store.service.IUserService;
-import cn.qy.store.service.ex.InsertException;
-import cn.qy.store.service.ex.PasswordNotMatchException;
-import cn.qy.store.service.ex.UserNotFoundException;
-import cn.qy.store.service.ex.UsernameDuplicatedException;
+import cn.qy.store.service.ex.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -60,6 +57,25 @@ public class UserServiceImpl implements IUserService {
         //如果在插入时，服务器发生宕机，抛出异常。
         if (rows != 1) {
             throw new InsertException("在用户注册过程中产生了未知的异常");
+        }
+    }
+
+    @Override
+    public void changePassword(Integer uid, String username, String oldPassword, String newPassword) {
+        User result = userMapper.findByUid(uid);
+        if (result == null || result.getIsDelete() == 1) {
+            throw new UserNotFoundException("用户数据不存在");
+        }
+        // 原始密码和数据库中密码进行比较
+        String oldMd5Password = getMD5Password(oldPassword, result.getSalt());
+        if (!result.getPassword().equals(oldMd5Password)) {
+            throw new PasswordNotMatchException("密码错误");
+        }
+        // 将新的密码设置到数据库中，将新的密码进行加密再去更新
+        String newMd5Password = getMD5Password(newPassword, result.getSalt());
+        Integer rows = userMapper.updatePasswordByUid(uid, newMd5Password, username, new Date());
+        if (rows != 1) {
+            throw new UpdateException("更新数据产生未知的异常");
         }
     }
 
