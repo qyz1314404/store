@@ -41,4 +41,11 @@ public interface UserMapper {
      *
      * */
     User findByUid(Integer uid);
+
+    /*
+     * 更新用户的数据信息
+     * @param user 用户的数据
+     * @return 返回值为受影响的行数
+     * */
+    Integer updateInfoByUid(User user);
 }

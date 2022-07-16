@@ -3,9 +3,13 @@ package cn.qy.store.service;
 import cn.qy.store.entity.User;
 import cn.qy.store.mapper.UserMapper;
 import cn.qy.store.service.ex.ServiceException;
+import cn.qy.store.service.ex.UpdateException;
+import cn.qy.store.service.ex.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Date;
 
 /**
  * @description: 测试持久层
@@ -52,5 +56,16 @@ public class UserServiceTests {
     public void changePassword() {
         userService.changePassword(5,"管理员","123456","123");
     }
-
+    @Test
+    public void getByUid() {
+        System.err.println(userService.getByUid(5));
+    }
+@Test
+    public void changeInfo() {
+    User user = new User();
+    user.setPhone("15907041514");
+    user.setEmail("qiu@qq.com");
+    user.setGender(0);
+    userService.changeInfo(5,"管理员",user);
+}
 }
