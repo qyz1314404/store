@@ -12,7 +12,7 @@
         <result column="modified_user" property="modifiedUser"></result>
         <result column="modified_time" property="modifiedTime"></result>
     </resultMap>
-    <insert id="insert" useGeneratedKeys="true" keyProperty="uid" >
+    <insert id="insert" useGeneratedKeys="true" keyProperty="uid">
         insert into t_user(
 	username,password,salt,phone,email,gender,avatar,is_delete,created_user,created_time,modified_user,modified_time
 )values(#{username},#{password},#{salt},#{phone},#{email},#{gender},#{avatar},#{isDelete},#{createdUser},#{createdTime},#{modifiedUser},#{modifiedTime}
@@ -36,5 +36,9 @@
         modified_user =#{modifiedUser},
         modified_time =#{modifiedTime}
         where uid=#{uid}
+    </update>
+
+    <update id="updateAvatarByUid">
+        update t_user set avatar = #{avatar},modified_user=#{modifiedUser},modified_time=#{modifiedTime} where uid =#{uid}
     </update>
 </mapper>
