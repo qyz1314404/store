@@ -1,5 +1,6 @@
 package cn.qy.store.controller;
 
+import cn.qy.store.controller.ex.*;
 import cn.qy.store.service.ex.*;
 import cn.qy.store.util.JsonResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +18,7 @@ public class BaseController {
 
     //自动将异常对象传递给此方法的参数列表上
 //当前项目中产生了异常，被统一拦截到此方法中，这个方法此时充当的是请求方法，方法的返回值直接给前端
-    @ExceptionHandler(ServiceException.class)
+    @ExceptionHandler({ServiceException.class,FileUploadException.class})
     public JsonResult<Void> handleException(Throwable e) {
         JsonResult<Void> result = new JsonResult<>(e);
         if (e instanceof UsernameDuplicatedException) {
@@ -32,9 +33,24 @@ public class BaseController {
         } else if (e instanceof PasswordNotMatchException) {
             result.setState(5002);
             result.setMessage("用户名的密码错误的异常");
-        }else if (e instanceof UpdateException) {
+        } else if (e instanceof UpdateException) {
             result.setState(5003);
             result.setMessage("更新数据时产生未知的异常");
+        } else if (e instanceof FileEmptyException) {
+            result.setState(6000);
+            result.setMessage("用户上传的文件为空的异常");
+        } else if (e instanceof FileSizeException) {
+            result.setState(6001);
+            result.setMessage("用户上传的文件大小超出了限制值的异常");
+        } else if (e instanceof FileTypeException) {
+            result.setState(6002);
+            result.setMessage("用户上传的文件类型超出了限制的异常");
+        } else if (e instanceof FileStateException) {
+            result.setState(6003);
+            result.setMessage("用户上传的文件状态的异常");
+        } else if (e instanceof FileUploadIOException) {
+            result.setState(6004);
+            result.setMessage("用户上传文件时读写的异常");
         }
         return result;
     }
