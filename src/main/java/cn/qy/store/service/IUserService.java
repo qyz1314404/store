@@ -1,6 +1,7 @@
 package cn.qy.store.service;
 
 import cn.qy.store.entity.User;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @description: 用户模块业务层接口
@@ -38,4 +39,12 @@ public interface IUserService {
      * @param user 用户对象的数据
      * */
     void changeInfo(Integer uid, String username, User user);
+
+    /*
+     * 更改用户头像
+     * @param uid 用户的id
+     * @param avatar 用户的头像
+     * @param username 用户的名称
+     * */
+    void changeAvatar(Integer uid, String avatar, String username);
 }
