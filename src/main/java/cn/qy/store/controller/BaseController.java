@@ -51,6 +51,9 @@ public class BaseController {
         } else if (e instanceof FileUploadIOException) {
             result.setState(6004);
             result.setMessage("用户上传文件时读写的异常");
+        } else if (e instanceof AddressCountLimitException) {
+            result.setState(6005);
+            result.setMessage("用户的收货地址超出上限的异常");
         }
         return result;
     }
