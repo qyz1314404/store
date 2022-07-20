@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qy.store.mapper.DistrictMapper">
+<select id="findByParent" resultType="cn.qy.store.entity.District">
+    select * from t_dict_district where parent=#{parent} order by code asc
+</select>
+</mapper>
