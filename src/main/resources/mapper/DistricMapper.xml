@@ -6,4 +6,7 @@
 <select id="findByParent" resultType="cn.qy.store.entity.District">
     select * from t_dict_district where parent=#{parent} order by code asc
 </select>
+    <select id="findNameByCode" resultType="java.lang.String">
+        select name from t_dict_district where code=#{code}
+    </select>
 </mapper>
