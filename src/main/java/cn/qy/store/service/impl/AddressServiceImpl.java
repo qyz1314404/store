@@ -3,6 +3,7 @@ package cn.qy.store.service.impl;
 import cn.qy.store.entity.Address;
 import cn.qy.store.mapper.AddressMapper;
 import cn.qy.store.service.IAddressService;
+import cn.qy.store.service.IDistrictService;
 import cn.qy.store.service.ex.AddressCountLimitException;
 import cn.qy.store.service.ex.InsertException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ import java.util.Date;
 public class AddressServiceImpl implements IAddressService {
     @Autowired
     private AddressMapper addressMapper;
+    //在添加用户的收货地址的业务层依赖于IDistrictService的业务层接口
+    @Autowired
+    private IDistrictService districtService;
     @Value("${user.address.max-count}")
     private Integer maxCount;
     @Override
@@ -29,6 +33,15 @@ public class AddressServiceImpl implements IAddressService {
         if (count == maxCount) {
             throw new AddressCountLimitException("用户收货地址超出上限");
         }
+        //对address对象中的省市区数据进行补全,因为从前端页面传过来的并没有名字只有代号。所以需要借用district应用层的方法使用代号来获取名字。
+        String provinceName = districtService.getNameByCode(address.getProvinceCode());
+        String cityName = districtService.getNameByCode(address.getCityCode());
+        String areaName = districtService.getNameByCode(address.getAreaCode());
+        address.setProvinceName(provinceName);
+        address.setCityName(cityName);
+        address.setAreaName(areaName);
+
+
         address.setUid(uid);
         Integer isDefault = count == 0 ? 1 : 0;
         address.setIsDefault(isDefault);
