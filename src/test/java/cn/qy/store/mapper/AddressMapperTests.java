@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 /**
  * @description: 测试持久层
  * @author: QiuYang
@@ -28,6 +30,12 @@ public class AddressMapperTests {
     public void countByUid(){
         Integer count = addressMapper.countByUid(5);
         System.out.println(count);
+    }
+    @Test
+    public void findByUid(){
+        List<Address> list = addressMapper.findByUid(5);
+        System.out.println(list);
+
     }
 
 }

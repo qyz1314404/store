@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description: 新增收货地址的实现类
@@ -26,6 +27,29 @@ public class AddressServiceImpl implements IAddressService {
     private IDistrictService districtService;
     @Value("${user.address.max-count}")
     private Integer maxCount;
+
+    @Override
+    public List<Address> getByUid(Integer uid) {
+        List<Address> list = addressMapper.findByUid(uid);
+        for (Address address:
+             list) {
+            address.setAid(null);
+            address.setUid(null);
+            address.setProvinceCode(null);
+            address.setCityCode(null);
+            address.setAreaCode(null);
+            address.setTel(null);
+            address.setIsDefault(null);
+            address.setCreatedTime(null);
+            address.setCreatedUser(null);
+            address.setModifiedTime(null);
+            address.setModifiedUser(null);
+
+
+        }
+        return list;
+    }
+
     @Override
     public void addNewAddress(Integer uid, String username, Address address) {
         //调用收货地址统计的方法
