@@ -54,6 +54,12 @@ public class BaseController {
         } else if (e instanceof AddressCountLimitException) {
             result.setState(6005);
             result.setMessage("用户的收货地址超出上限的异常");
+        }else if (e instanceof AddressNotFoundException) {
+            result.setState(6006);
+            result.setMessage("用户的收货地址数据不存在的异常");
+        }else if (e instanceof AccessDeniedException) {
+            result.setState(6007);
+            result.setMessage("收货地址数据非法访问的异常");
         }
         return result;
     }
