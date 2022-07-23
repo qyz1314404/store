@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,5 +38,18 @@ public class AddressMapperTests {
         System.out.println(list);
 
     }
+@Test
+    public void findByAid(){
+    System.err.println(addressMapper.findByAid(3));
+    }
+    @Test
+    public void updateNonDefault(){
+        addressMapper.updateNonDefault(5);
+    }
+    @Test
+    public void updateDefaultByAid(){
+        addressMapper.updateDefaultByAid(3, "管理员", new Date());
+    }
+
 
 }

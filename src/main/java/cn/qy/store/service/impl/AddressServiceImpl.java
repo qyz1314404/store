@@ -4,8 +4,7 @@ import cn.qy.store.entity.Address;
 import cn.qy.store.mapper.AddressMapper;
 import cn.qy.store.service.IAddressService;
 import cn.qy.store.service.IDistrictService;
-import cn.qy.store.service.ex.AddressCountLimitException;
-import cn.qy.store.service.ex.InsertException;
+import cn.qy.store.service.ex.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,8 +32,8 @@ public class AddressServiceImpl implements IAddressService {
         List<Address> list = addressMapper.findByUid(uid);
         for (Address address:
              list) {
-            address.setAid(null);
-            address.setUid(null);
+//            address.setAid(null);
+//            address.setUid(null);
             address.setProvinceCode(null);
             address.setCityCode(null);
             address.setAreaCode(null);
@@ -78,6 +77,28 @@ public class AddressServiceImpl implements IAddressService {
         Integer rows = addressMapper.insert(address);
         if (rows != 1) {
             throw new InsertException("插入用户的收货地址产生未知异常");
+        }
+    }
+
+    @Override
+    public void setDefault(Integer aid, Integer uid, String username) {
+        Address result = addressMapper.findByAid(aid);
+        if (result == null) {
+            throw new AddressNotFoundException("收货地址不存在");
+        }
+        //检测当前获取到的收货地址数据的归属
+        if (!result.getUid().equals(uid)) {
+            throw new AccessDeniedException("非法数据访问");
+        }
+        //先将所有的收货地址设置为非默认
+        Integer rows = addressMapper.updateNonDefault(uid);
+        if (rows < 1) {
+            throw new UpdateException("更新数据产生未知的异常");
+        }
+        //将用户选中某条地址设置为默认收货地址
+         rows = addressMapper.updateDefaultByAid(aid, username, new Date());
+        if (rows != 1) {
+            throw new UpdateException("更新数据产生未知的异常");
         }
     }
 }

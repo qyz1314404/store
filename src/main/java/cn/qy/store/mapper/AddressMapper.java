@@ -1,7 +1,9 @@
 package cn.qy.store.mapper;
 
 import cn.qy.store.entity.Address;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,4 +34,22 @@ public interface AddressMapper {
      *
      * */
     List<Address> findByUid(Integer updateIsDefault);
+
+    /*
+     * 根据aid查询收货地址数据
+     * @param aid 收货地址id
+     * @return 收货地址数据，如果没有找到则返回null值
+     *
+     * */
+    Address findByAid(Integer aid);
+
+    /*
+     * 根据用户的uid值来修改用户的收货地址设置为非默认
+     * @param uid 用户的id值
+     * @return 受影响的行数
+     *
+     * */
+    Integer updateNonDefault(Integer uid);
+
+    Integer updateDefaultByAid(@Param("aid") Integer aid,@Param("modifiedUser") String modifiedUser, @Param("modifiedTime") Date modifiedTime);
 }

@@ -36,4 +36,17 @@
         select * from t_address where uid=#{uid}
         order by is_default DESC,created_time DESC
     </select>
+
+    <select id="findByAid" resultMap="AddressEntityMap">
+        select * from t_address where aid=#{aid}
+    </select>
+    <update id="updateNonDefault">
+        update t_address set is_default=0 where uid=#{uid}
+    </update>
+    <update id="updateDefaultByAid">
+        update t_address set is_default=1,
+        modified_user=#{modifiedUser},
+        modified_time=#{modifiedTime}
+        where aid=#{aid}
+    </update>
 </mapper>
