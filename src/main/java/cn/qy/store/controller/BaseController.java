@@ -60,6 +60,9 @@ public class BaseController {
         }else if (e instanceof AccessDeniedException) {
             result.setState(6007);
             result.setMessage("收货地址数据非法访问的异常");
+        } else if (e instanceof DeleteException) {
+            result.setState(6008);
+            result.setMessage("删除数据时产生未知的异常");
         }
         return result;
     }
