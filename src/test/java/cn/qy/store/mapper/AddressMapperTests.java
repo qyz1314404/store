@@ -18,8 +18,9 @@ import java.util.List;
 public class AddressMapperTests {
     @Autowired
     private AddressMapper addressMapper;
+
     @Test
-    public void insert(){
+    public void insert() {
         Address address = new Address();
         address.setUid(5);
         address.setPhone("15707008133");
@@ -27,29 +28,42 @@ public class AddressMapperTests {
         addressMapper.insert(address);
 
     }
+
     @Test
-    public void countByUid(){
+    public void countByUid() {
         Integer count = addressMapper.countByUid(5);
         System.out.println(count);
     }
+
     @Test
-    public void findByUid(){
+    public void findByUid() {
         List<Address> list = addressMapper.findByUid(5);
         System.out.println(list);
 
     }
-@Test
-    public void findByAid(){
-    System.err.println(addressMapper.findByAid(3));
-    }
+
     @Test
-    public void updateNonDefault(){
+    public void findByAid() {
+        System.err.println(addressMapper.findByAid(3));
+    }
+
+    @Test
+    public void updateNonDefault() {
         addressMapper.updateNonDefault(5);
     }
+
     @Test
-    public void updateDefaultByAid(){
+    public void updateDefaultByAid() {
         addressMapper.updateDefaultByAid(3, "管理员", new Date());
     }
 
+    @Test
+    public void deleteByAid() {
+        addressMapper.deleteByAid(4);
+    }
 
+    @Test
+    public void tfindLastModified() {
+        System.out.println(addressMapper.findLastModified(5));
+    }
 }

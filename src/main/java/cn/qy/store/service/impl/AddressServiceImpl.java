@@ -101,4 +101,35 @@ public class AddressServiceImpl implements IAddressService {
             throw new UpdateException("更新数据产生未知的异常");
         }
     }
+
+    @Override
+    public void delete(Integer aid, Integer uid, String username) {
+        Address result = addressMapper.findByAid(aid);
+        if (result == null) {
+            throw new AddressNotFoundException("收货地址数据不存在");
+        }
+        //检测当前获取到的收货地址数据的归属
+        if (!result.getUid().equals(uid)) {
+            throw new AccessDeniedException("非法数据访问");
+        }
+        Integer rows = addressMapper.deleteByAid(aid);
+        if (rows !=1) {
+            throw new DeleteException("删除数据产生未知的异常");
+        }
+        Integer count = addressMapper.countByUid(uid);
+        if (count == 0) {
+            //直接终止程序
+            return;
+        }
+        if (result.getIsDefault() == 0) {
+           return;
+        }
+        //将这条数据的is_default字符的值设置
+        Address address = addressMapper.findLastModified(uid);
+        rows = addressMapper.updateDefaultByAid(address.getAid(), username, new Date());
+        if (rows != 1) {
+            throw new UpdateException("更新数据时产生未知的异常");
+        }
+
+    }
 }

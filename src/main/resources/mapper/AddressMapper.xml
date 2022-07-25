@@ -49,4 +49,12 @@
         modified_time=#{modifiedTime}
         where aid=#{aid}
     </update>
+    <delete id="deleteByAid">
+        delete from t_address where aid=#{aid}
+    </delete>
+    <select id="findLastModified" resultMap="AddressEntityMap">
+        select * from t_address
+        where uid=#{uid}
+        order by modified_time desc limit 0,1
+    </select>
 </mapper>
