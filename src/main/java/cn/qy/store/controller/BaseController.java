@@ -63,6 +63,9 @@ public class BaseController {
         } else if (e instanceof DeleteException) {
             result.setState(6008);
             result.setMessage("删除数据时产生未知的异常");
+        } else if (e instanceof ProductNotFoundException) {
+            result.setState(6009);
+            result.setMessage("商品数据不存在的异常");
         }
         return result;
     }
