@@ -7,10 +7,12 @@ import cn.qy.store.mapper.ProductMapper;
 import cn.qy.store.service.ICartService;
 import cn.qy.store.service.ex.InsertException;
 import cn.qy.store.service.ex.UpdateException;
+import cn.qy.store.vo.CartVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description:
@@ -56,5 +58,9 @@ public class CartServiceImpl implements ICartService {
             }
 
         }
+    }
+    @Override
+    public List<CartVO> getVOByUid(Integer uid) {
+        return cartMapper.findVOByUid(uid);
     }
 }

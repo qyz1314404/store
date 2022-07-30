@@ -1,6 +1,7 @@
 package cn.qy.store.service;
 
 import cn.qy.store.entity.Address;
+import cn.qy.store.mapper.CartMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

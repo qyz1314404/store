@@ -2,11 +2,13 @@ package cn.qy.store.controller;
 
 import cn.qy.store.service.ICartService;
 import cn.qy.store.util.JsonResult;
+import cn.qy.store.vo.CartVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @description:
@@ -23,5 +25,11 @@ public class CartController extends BaseController {
     public JsonResult<Void> addToCart(Integer pid, Integer amount, HttpSession session) {
         cartService.addToCart(getUidFromSession(session),pid,amount,getUsernameFromSession(session));
         return new JsonResult<>(OK);
+    }
+
+    @RequestMapping({"", "/"})
+    public JsonResult<List<CartVO>> getVOByUid(HttpSession session) {
+        List<CartVO> data = cartService.getVOByUid(getUidFromSession(session));
+        return new JsonResult<>(OK, data);
     }
 }

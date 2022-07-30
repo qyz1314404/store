@@ -39,5 +39,9 @@ public class CartMapperTests {
        System.err.println(cart);
 
    }
+    @Test
+    public void findVOByUid(){
+        System.out.println(cartMapper.findVOByUid(5));
+    }
 
 }

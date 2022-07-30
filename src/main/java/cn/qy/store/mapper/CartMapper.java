@@ -1,9 +1,11 @@
 package cn.qy.store.mapper;
 
 import cn.qy.store.entity.Cart;
+import cn.qy.store.vo.CartVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description: 加入购物车持久层
@@ -39,4 +41,11 @@ public interface CartMapper {
  * @Date  2022/7/29 22:10
  **/
     Cart findByUidAndPid(@Param("uid") Integer uid,@Param("pid") Integer pid);
+
+    /**
+     * 根据用户id查询CartVO对象
+     * @param uid 用户的id
+     * @return 返回CartVO对象
+     */
+    List<CartVO> findVOByUid(Integer uid);
 }

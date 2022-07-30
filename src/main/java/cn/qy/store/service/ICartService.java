@@ -1,5 +1,9 @@
 package cn.qy.store.service;
 
+import cn.qy.store.vo.CartVO;
+
+import java.util.List;
+
 /**
  * @description:
  * @author: QiuYang
@@ -14,4 +18,11 @@ public interface ICartService {
      * @param username 用户名（修改者）
      */
     void addToCart(Integer uid, Integer pid, Integer amount, String username);
+
+    /**
+     * 获取购物车信息列表
+     * @param uid 用户的id
+     * @return 购物车里面的商品信息
+     */
+    List<CartVO> getVOByUid(Integer uid);
 }
