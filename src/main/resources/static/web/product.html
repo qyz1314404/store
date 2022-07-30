@@ -323,6 +323,27 @@
 					}
 				});
 			});
+			$("#btn-add-to-cart").click(function () {
+				$.ajax({
+					url:"/carts/add_to_cart",
+					type:"POST",
+					data:{
+						"pid":id,
+						"amount":$("#num").val()
+					},
+					dataType:"JSON",
+					success:function (json) {
+						if (json.state == 200) {
+							alert("加入购物车成功");
+							}else{
+							alert("加入购物车失败");
+						}
+					},
+				    error:function (xhr) {
+						alert("加入购物车时产生未知的异常" + xhr.message);
+					}
+				});
+			})
 		</script>
 	</body>
 
