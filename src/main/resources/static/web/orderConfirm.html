@@ -252,8 +252,9 @@
 		<script type="text/javascript">
 			$(document).ready(function () {
 				showCartList();
+				showAddressList();
 			});
-			//展示购物车列表数据
+			//展示购物车已选列表数据
 			function showCartList() {
 				//清空tbody标签中的数据
 				$("#cart-list").empty();
@@ -291,6 +292,36 @@
 					},
 					error: function (xhr) {
 						alert("购物车列表数据加载产生未知的异常，" + xhr.status);
+					}
+				});
+			}
+			function showAddressList() {
+				//清空select标签中的数据
+				$("#address-list").empty();
+				$.ajax({
+					url: "/addresses",
+					type: "GET",
+					dataType: "JSON",
+					success: function (json) {
+						if (json.state == 200) {
+							var list = json.data;
+							for (var i = 0; i < list.length; i++) {
+								var opt = '<option value="#{aid}">#{name}&nbsp;&nbsp;&nbsp;#{tag}&nbsp;&nbsp;&nbsp;#{provinceName}#{cityName}#{areaName}#{address}&nbsp;&nbsp;&nbsp;#{phone}</option>'
+								opt=opt.replace(/#{aid}/g, list[i].aid);
+								opt=opt.replace(/#{name}/g, list[i].name);
+								opt=opt.replace(/#{tag}/g, list[i].tag);
+								opt=opt.replace(/#{provinceName}/g, list[i].provinceName);
+								opt=opt.replace(/#{cityName}/g, list[i].cityName);
+								opt=opt.replace(/#{areaName}/g, list[i].areaName);
+								opt=opt.replace(/#{address}/g, list[i].address);
+								opt=opt.replace(/#{phone}/g, list[i].phone);
+								$("#address-list").append(opt);
+							}
+
+						}
+					},
+					error: function (xhr) {
+						alert("收货地址列表数据加载产生未知的异常，" + xhr.status);
 					}
 				});
 			}
