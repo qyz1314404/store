@@ -36,4 +36,7 @@
         order by
             t_cart.created_time desc
     </select>
+    <select id="findByCid" resultMap="CartEntityMap">
+        select * from t_cart where cid=#{cid}
+    </select>
 </mapper>

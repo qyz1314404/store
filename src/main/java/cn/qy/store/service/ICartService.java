@@ -25,4 +25,13 @@ public interface ICartService {
      * @return 购物车里面的商品信息
      */
     List<CartVO> getVOByUid(Integer uid);
+
+    /**
+     * 更新用户的购物车数据的数量
+     * @param cid
+     * @param uid
+     * @param username
+     * @return 增加成功后新的数量
+     */
+    Integer addNum(Integer cid, Integer uid, String username);
 }

@@ -48,4 +48,11 @@ public interface CartMapper {
      * @return 返回CartVO对象
      */
     List<CartVO> findVOByUid(Integer uid);
+
+    /**
+     * 根据cid来查询购物车这条数据是否存在。
+     * @param cid
+     * @return 购物车数据
+     */
+    Cart findByCid(Integer cid);
 }

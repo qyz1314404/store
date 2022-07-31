@@ -5,12 +5,15 @@ import cn.qy.store.entity.Product;
 import cn.qy.store.mapper.CartMapper;
 import cn.qy.store.mapper.ProductMapper;
 import cn.qy.store.service.ICartService;
+import cn.qy.store.service.ex.AccessDeniedException;
+import cn.qy.store.service.ex.CartNotFoundException;
 import cn.qy.store.service.ex.InsertException;
 import cn.qy.store.service.ex.UpdateException;
 import cn.qy.store.vo.CartVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.rmi.server.UID;
 import java.util.Date;
 import java.util.List;
 
@@ -62,5 +65,22 @@ public class CartServiceImpl implements ICartService {
     @Override
     public List<CartVO> getVOByUid(Integer uid) {
         return cartMapper.findVOByUid(uid);
+    }
+
+    @Override
+    public Integer addNum(Integer cid, Integer uid, String username) {
+        Cart result = cartMapper.findByCid(cid);
+        if (result == null) {
+            throw new CartNotFoundException("数据不存在");
+        }
+        if (!result.getUid().equals(uid)) {
+            throw new AccessDeniedException("数据非法访问");
+        }
+        Integer num = result.getNum() + 1;
+        Integer rows = cartMapper.updateNumByCid(cid, num, username, new Date());
+        if (rows!=1) {
+            throw new UpdateException("更新数据失败");
+        }
+        return num;
     }
 }
