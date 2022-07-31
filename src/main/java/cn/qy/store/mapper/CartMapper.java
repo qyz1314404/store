@@ -55,4 +55,6 @@ public interface CartMapper {
      * @return 购物车数据
      */
     Cart findByCid(Integer cid);
+
+    List<CartVO> findVOByCid(Integer[] cids);
 }

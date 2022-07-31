@@ -21,7 +21,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/footer.css" />
 		<link rel="stylesheet" type="text/css" href="../css/orderConfirm.css" />
 		<link rel="stylesheet" type="text/css" href="../css/cart.css" />
-		<script src="../js/orderConfirm.js" type="text/javascript" charset="utf-8"></script>
+<!--		<script src="../js/orderConfirm.js" type="text/javascript" charset="utf-8"></script>-->
 	</head>
 
 	<body>
@@ -249,6 +249,52 @@
 
 		</footer>
 		<!--页脚结束-->
+		<script type="text/javascript">
+			$(document).ready(function () {
+				showCartList();
+			});
+			//展示购物车列表数据
+			function showCartList() {
+				//清空tbody标签中的数据
+				$("#cart-list").empty();
+				console.log("清空tbody标签中的数据");
+				$.ajax({
+					url: "/carts/list",
+					type:"GET",
+					data: location.search.substr(1),
+					dataType: "JSON",
+					success:function (json) {
+						if (json.state == 200) {
+							var list = json.data;
+							var allCount = 0;
+							var allPrice = 0;
+							for (var i = 0; i < list.length; i++) {
+								var tr='<tr>\n' +
+										'<td><img src="..#{image}collect.png" class="img-responsive" /></td>\n' +
+										'<td>#{title}</td>\n' +
+										'<td>¥<span>#{price}</span></td>\n' +
+										'<td>#{num}</td>\n' +
+										'<td><span>#{totalPrice}</span></td>\n' +
+										'</tr>';
+								tr = tr.replace(/#{image}/g, list[i].image);
+								tr = tr.replace(/#{title}/g, list[i].title);
+								tr = tr.replace(/#{price}/g, list[i].price);
+								tr = tr.replace(/#{num}/g, list[i].num);
+								tr = tr.replace(/#{totalPrice}/g, list[i].price*list[i].num);
+								$("#cart-list").append(tr);
+								allCount+=list[i].num;
+								allPrice+=list[i].price*list[i].num;
+							}
+							$("#all-count").html(allCount);
+							$("#all-price").html(allPrice);
+						}
+					},
+					error: function (xhr) {
+						alert("购物车列表数据加载产生未知的异常，" + xhr.status);
+					}
+				});
+			}
+		</script>
 	</body>
 
 </html>
