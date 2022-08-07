@@ -254,6 +254,28 @@
 				showCartList();
 				showAddressList();
 			});
+			$("#btn-create-order").click(function () {
+                var aid = $("#address-list").val();//6
+                var cids = location.search.substr(1);//cids=4&cids=3
+                $.ajax({
+                    url: "/orders/create",
+                    type:"GET",
+                    data: "aid="+aid+"&"+cids,//aid=12&cids=4&cids=3
+                    dataType: "JSON",
+                    success:function (json) {
+                        if (json.state == 200) {
+                            location.href = "payment.html";
+                            alert("订单创建成功");
+                        }
+                    },
+                    error: function (xhr) {
+                        alert("订单数据加载产生未知的异常，" + xhr.status);
+                    }
+                });
+            });
+
+
+
 			//展示购物车已选列表数据
 			function showCartList() {
 				//清空tbody标签中的数据
